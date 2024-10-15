@@ -1,0 +1,24 @@
+#titleContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+#centerImage {
+    flex: 1;
+    margin: 0;
+    width: 20vw;
+    padding-top: 6vw;
+}
+
+#titleHeader {
+    flex: 2;
+    margin: 0;
+    font-size: 3vw;
+    letter-spacing: 0.3vw;
+    word-spacing: 1vw;
+    color: #252223;
+}
