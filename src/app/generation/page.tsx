@@ -175,28 +175,23 @@ export default function Generator() {
 
     return (
         <>
-            <div style={{
-                display: 'flex',
-                height: '100vh'
-            }}>
-                <div id={styles.genContainer}>
-                    <div id={styles.playerData}>
-                        <h2>Country: {player?.country}</h2>
-                        <h2>Name: {player?.first} {player?.last}</h2>
-                    </div>
-                    <div id={styles.inputBox}>
-                        <h3>Total amount of players to generate:</h3>
-                        <InputNumber
-                            inputValue={inputValue}
-                            onChange={handleInputChange}
-                            max={500}
-                        />
-                        <Button onClick={handleCustomGen} id={styles.buttonCustomGen} label='Submit' />
-                    </div>
-                    <div id={styles.boxButton}>
-                        <Button onClick={handleGen} id={styles.buttonGen} label='Generate'/>
-                        <Button onClick={handleStore} id={styles.buttonStore} label='Store in DB'/>
-                    </div>
+            <div id={styles.genContainer}>
+                <div id={styles.playerData}>
+                    <h2>Country: {player?.country}</h2>
+                    <h2>Name: {player?.first} {player?.last}</h2>
+                </div>
+                <div id={styles.inputBox}>
+                    <h3>Amount of players to generate:</h3>
+                    <InputNumber
+                        inputValue={inputValue}
+                        onChange={handleInputChange}
+                        max={500}
+                    />
+                    <Button onClick={handleCustomGen} id={styles.buttonCustomGen} label='Submit' />
+                </div>
+                <div id={styles.boxButton}>
+                    <Button onClick={handleGen} id={styles.buttonGen} label='Generate'/>
+                    <Button onClick={handleStore} id={styles.buttonStore} label='Store in DB'/>
                 </div>
             </div>
         </>)

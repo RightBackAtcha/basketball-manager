@@ -42,6 +42,7 @@ const InputNumber: React.FC<InputProps> = ( props: InputProps) => {
                 onChange={handleInputChange}
                 min={props.min}
                 max={props.max}
+                placeholder={'1 - 500'}
                 style={{
                     marginTop: '12px',
                     marginLeft: '10px',
