@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Footer from '../components/Footer';
 import Header from "@/components/Header";
+import ServiceWorker from "@/components/ServiceWorker";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,12 +29,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Header />
-        {children}
-        <Footer />
-      </body>
-    </html>
+    <>
+      <head>
+        <link rel="icon" type="image/png" href="/favicon/favicon-48x48.png" sizes="48x48"/>
+        <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg"/>
+        <link rel="shortcut icon" href="/favicon/favicon.ico"/>
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"/>
+        <meta name="apple-mobile-web-app-title" content="BBALLGM"/>
+        <link rel="manifest" href="/favicon/site.webmanifest"/>
+      </head>
+      <html lang="en">
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <Header/>
+          {children}
+          <ServiceWorker />
+          <Footer/>
+        </body>
+      </html>
+    </>
   );
 }

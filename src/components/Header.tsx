@@ -9,37 +9,44 @@ export default function Header() {
                 display: 'flex',
                 flexDirection: 'row',
                 top: 0,
-                paddingLeft: '20px',
-                paddingTop: '8px',
+                paddingLeft: '14px',
+                paddingTop: '10px',
+                paddingBottom: '5px',
                 margin: 0,
-                backgroundColor: '#291140',
-                color: '#f1f1f1',
+                backgroundColor: '#FF7141',
+                color: '#FF7141',
                 boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
             }}>
                 <div>
-                    <Link href="/">
-                        <Image src={'/images/ball.png'} alt='Home Button' width={50} height={50} />
+                    <Link href="/" style={{
+                        textDecoration: 'none',
+                        paddingRight: '5px',
+                    }}>
+                        <Image src={'/images/ball.png'} alt='Home Button' width={40} height={40} />
                     </Link>
                 </div>
                 <div style={{
-                    marginLeft: '20px',
-                    marginTop: '-8px',
+                    marginLeft: '10px',
+                    marginTop: '-15px',
+                    marginBottom: '-5px',
                     width: '5px',
-                    height: '66px',
+                    height: '65px',
                     backgroundColor: 'black'
                 }}></div>
                 <div style={{
                     paddingLeft: '20px',
-                    marginTop: '-10px'
+                    marginTop: '-20px'
                 }}>
                     <Link href="/generation" style={{
                         textDecoration: 'none',
                         color: '#FFFFFF',
-
                     }}>
-                        <h2>
+                        <p style={{
+                            fontSize: '25px',
+                            marginBottom: '-5px',
+                        }}>
                         Generator
-                        </h2>
+                        </p>
                     </Link>
                 </div>
             </div>

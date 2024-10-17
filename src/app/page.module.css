@@ -4,21 +4,22 @@
     align-items: center;
     height: auto;
     width: auto;
-    margin-top: 200px;
+    margin-top: 13vh;
+    margin-bottom: 10vh;
 }
 
 #centerImage {
     flex: 1;
     margin: 0;
-    width: 500px;
+    width: 15vw;
     height: auto;
 }
 
 #titleHeader {
     flex: 2;
     margin: 0;
-    font-size: 50px;
+    font-size: 2.5vw;
     letter-spacing: 2px;
-    word-spacing: 10px;
+    word-spacing: 2vw;
     color: #252223;
 }
