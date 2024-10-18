@@ -8,7 +8,7 @@ import InputNumber from '@/components/ui/InputNumber';
 import GenerationUtils from '@/utils/GenerationUtils';
 
 import { Player } from "@/utils/PlayerTypes";
-import {storePlayerInDB} from "@/utils/DataUtils";
+import { storePlayerInDB } from "@/utils/DataUtils";
 
 export default function Generator() {
 
@@ -21,9 +21,10 @@ export default function Generator() {
         setInputValue(value);
     };
 
-    const handleGen = async (generatedPlayers: Player[]) => {
-        setGeneratedPlayers(generatedPlayers);
-        setPlayer(generatedPlayers[0]);
+    const handlePlayers = async (players: Player[]) => {
+        console.log('Pressed generate button.');
+        setGeneratedPlayers(players);
+        setPlayer(players[0]);
     }
 
     // Handle storing of player data
@@ -33,15 +34,13 @@ export default function Generator() {
         }
     }
 
+    const { handleGen } = GenerationUtils({
+        inputValue,
+        onGen: handlePlayers,
+    });
+
     return (
         <>
-            <GenerationUtils
-                player={player}
-                setPlayer={setPlayer}
-                inputValue={inputValue}
-                setInputValue={setInputValue}
-                onGen={handleGen}
-            />
             <div id={styles.genContainer}>
                 <div id={styles.playerData}>
                     <h2>Birth Place: {player?.born.location}</h2>

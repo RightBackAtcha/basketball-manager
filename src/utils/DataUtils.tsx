@@ -48,7 +48,7 @@ export async function storePlayerInDB(player: Player | null) {
 
     try {
         const db = await openDatabase();
-        const transaction = db.transaction(['players'], 'readwrite');
+        const transaction = db.transaction('players', 'readwrite');
         const objectStore = transaction.objectStore('players');
 
         const request = objectStore.add(player); // Add player to object store

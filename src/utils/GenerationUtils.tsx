@@ -2,21 +2,16 @@
 
 import {useEffect, useState} from "react";
 
-import { storePlayerInDB, fetchJSON } from '@/utils/DataUtils';
+import { fetchJSON } from '@/utils/DataUtils';
 import { Country, Name, Player } from "@/utils/PlayerTypes";
 
 interface GenerationProps {
-    player: Player | null;
-    setPlayer: (player: Player | null) => void;
     inputValue: string;
-    setInputValue: (value: string) => void;
     onGen: (players: Player[]) => void;
 }
 
-export default function GenerationUtils({ player, setPlayer, inputValue, setInputValue, onGen }: GenerationProps) {
+export default function GenerationUtils({ inputValue, onGen }: GenerationProps) {
     // Variables for player generation and storage
-    // const [player, setPlayer] = useState<Player | null>(null);
-    // const [inputValue, setInputValue] = useState('');
     const [countries, setCountries] = useState<Country[]>([]);
     const [firstNames, setFirstnames] = useState<Name[]>([]);
     const [lastNames, setLastnames] = useState<Name[]>([]);
@@ -39,7 +34,7 @@ export default function GenerationUtils({ player, setPlayer, inputValue, setInpu
         loadData();
     }, []);
 
-    const handleGen = async() => {
+    const handleGen = async (generatedPlayers: Player[]) => {
         const worker = new Worker(new URL('../workers/PlayerGenerationWorker.ts', import.meta.url))
 
         const totalPlayers = Number(inputValue);
@@ -67,5 +62,5 @@ export default function GenerationUtils({ player, setPlayer, inputValue, setInpu
     //     }
     // }
 
-    return null;
+    return { handleGen };
 }
