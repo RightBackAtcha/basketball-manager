@@ -1,7 +1,34 @@
 // Define types for game
+import {number} from "prop-types";
+
 export type Awards = {
     season?: number;
     type?: string;
+}
+
+export type Ratings = {
+    speed: number;
+    agility: number;
+    strength: number;
+    stamina: number;
+    close: number;
+    midRange: number;
+    threeRange: number;
+    freeThrow: number;
+    driveDunk: number;
+    standDunk: number;
+    post: number;
+    passAcc: number;
+    ballHandle: number;
+    intDef: number;
+    perDef: number;
+    steal: number;
+    block: number;
+    offIQ: number;
+    defIQ: number;
+    ovr: number;
+    pot: number;
+    year: number;
 }
 
 export type Born = {
@@ -16,6 +43,7 @@ export type Player = {
     last: string;
     tID: number;
     pID?: number;
+    ratings: Ratings[];
 }
 
 export type Country = {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+// Custom number only input for next.js
 
 interface InputProps {
     inputValue: string;

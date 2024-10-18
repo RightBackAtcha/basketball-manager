@@ -96,7 +96,7 @@
 }
 
 #buttonStore:hover {
-    box-shadow: 0 0 2vw #371b51;
+    box-shadow: 0 0 1vw #27292d;
 }
 
 #buttonCustomGen {
@@ -145,5 +145,5 @@
 }
 
 #buttonCustomGen:hover {
-    box-shadow: 0 0 2vw #371b51;
+    box-shadow: 0 0 1vw #27292d;
 }
