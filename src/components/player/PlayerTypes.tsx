@@ -1,4 +1,6 @@
 // Define types for game
+import {number} from "prop-types";
+
 export type Awards = {
     season?: number;
     type?: string;
