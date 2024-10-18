@@ -1,3 +1,5 @@
+// Custom next.js button
+
 import React from "react";
 
 interface ButtonProps {

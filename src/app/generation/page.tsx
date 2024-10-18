@@ -1,8 +1,8 @@
 'use client';
 
 import styles from "./page.module.css";
-import Button from '../../components/Button';
-import InputNumber from '../../components/InputNumber';
+import Button from '../../components/ui/Button';
+import InputNumber from '../../components/ui/InputNumber';
 import { Country, Name, Player } from "@/components/player/PlayerTypes";
 import { useEffect, useState } from "react";
 
@@ -77,6 +77,7 @@ export default function Generator() {
     const [countries, setCountries] = useState<Country[]>([]);
     const [firstNames, setFirstnames] = useState<Name[]>([]);
     const [lastNames, setLastnames] = useState<Name[]>([]);
+    const [regions, setRegions] = useState<Name[]>([]);
     const [generatedPlayers, setGeneratedPlayers] = useState<Player[]>([]);
 
     // Fetch JSON data
@@ -85,10 +86,12 @@ export default function Generator() {
             const countriesData = await fetchJSON('countries');
             const firstNamesData = await fetchJSON('firstNames');
             const lastNamesData = await fetchJSON('lastNames');
+            const regionsData = await fetchJSON('regions');
 
             setCountries(countriesData);
             setFirstnames(firstNamesData);
             setLastnames(lastNamesData);
+            setRegions(regionsData);
         }
         loadData();
     }, []);
@@ -100,7 +103,7 @@ export default function Generator() {
         const tID = 1;
 
         if (!isNaN(totalPlayers) && (worker && totalPlayers > 0)) {
-            worker.postMessage({ countries, firstNames, lastNames, totalPlayers, tID });
+            worker.postMessage({ countries, firstNames, lastNames, regions, totalPlayers, tID });
 
             worker.onmessage = function (e: MessageEvent<Player[]>) {
                 const players = e.data;
@@ -128,7 +131,7 @@ export default function Generator() {
         <>
             <div id={styles.genContainer}>
                 <div id={styles.playerData}>
-                    <h2>Country: {player?.born.location}</h2>
+                    <h2>Birth Place: {player?.born.location}</h2>
                     <h2>Name: {player?.first} {player?.last}</h2>
                     <h2>Age: {player?.born.year}</h2>
                 </div>

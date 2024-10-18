@@ -1,3 +1,5 @@
+// Service worker to cache whole website when offline
+
 'use client';
 
 import { useEffect } from 'react';
