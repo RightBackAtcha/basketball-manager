@@ -1,6 +1,6 @@
 // Offloads player generation onto a separate thread using a web worker
 
-import { Awards, Born, Country, Name, Player, Ratings } from "@/components/player/PlayerTypes";
+import { Awards, Born, Country, Name, Player, Ratings } from "@/utils/PlayerTypes";
 
 // Weights for player age
 const ageDistribution = [

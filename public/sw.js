@@ -1,4 +1,4 @@
-const CACHE_NAME = 'basketball-manager-cache-v1'
+const CACHE_NAME = 'basketball-manager-cache-v2'
 const cachedAssets = [
     '/',
     '/data/countries.json',
