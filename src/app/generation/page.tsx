@@ -3,41 +3,8 @@
 import styles from "./page.module.css";
 import Button from '../../components/Button';
 import InputNumber from '../../components/InputNumber';
-
-import {useEffect, useState} from "react";
-
-// Define types for Player, Country and Name
-type Player = {
-    country: string;
-    first: string;
-    last: string;
-}
-
-type Country = {
-    id: number;
-    name: string;
-    weight: number;
-}
-
-type Name = {
-    name: string;
-    country_id: number;
-}
-
-// Define player generation worker using Worker class
-
-// Weighted random function
-function weightedRandom(weights: number[]) {
-    let totalWeight = weights.reduce((acc, weight) => acc + weight, 0);
-    let random = Math.random() * totalWeight;
-
-    for(let i = 0; i < weights.length; i++) {
-        if (random < weights[i]) {
-            return i + 1; // Country ID starts from 1, so return index + 1
-        }
-        random -= weights[i];
-    }
-}
+import { Country, Name, Player } from "@/components/player/PlayerTypes";
+import { useEffect, useState } from "react";
 
 // Database name and version
 const dbName = 'players';
@@ -51,10 +18,8 @@ function openDatabase(): Promise<IDBDatabase> {
         // Handle upgrades
         request.onupgradeneeded = function(event) {
             const db = (event.target as IDBOpenDBRequest).result;
-            const objectStore = db.createObjectStore(dbName, { autoIncrement: true });
-            objectStore.createIndex('country', 'country', { unique: false });
-            objectStore.createIndex('first', 'first', { unique: false });
-            objectStore.createIndex('last', 'last', { unique: false });
+            const objectStore = db.createObjectStore(dbName, { keyPath: 'pID', autoIncrement: true });
+            objectStore.createIndex("tID", "tID", { unique: false });
         };
 
         // Handle success
@@ -132,9 +97,10 @@ export default function Generator() {
         const worker = new Worker(new URL('../../workers/PlayerGenerationWorker.ts', import.meta.url))
 
         const totalPlayers = Number(inputValue);
+        const tID = 1;
 
         if (!isNaN(totalPlayers) && (worker && totalPlayers > 0)) {
-            worker.postMessage({ countries, firstNames, lastNames, totalPlayers });
+            worker.postMessage({ countries, firstNames, lastNames, totalPlayers, tID });
 
             worker.onmessage = function (e: MessageEvent<Player[]>) {
                 const players = e.data;
@@ -162,11 +128,12 @@ export default function Generator() {
         <>
             <div id={styles.genContainer}>
                 <div id={styles.playerData}>
-                    <h2>Country: {player?.country}</h2>
+                    <h2>Country: {player?.born.location}</h2>
                     <h2>Name: {player?.first} {player?.last}</h2>
+                    <h2>Age: {player?.born.year}</h2>
                 </div>
                 <div id={styles.inputBox}>
-                    <h3>Players to generate:</h3>
+                <h3>Players to generate:</h3>
                     <InputNumber
                         inputValue={inputValue}
                         onChange={handleInputChange}
