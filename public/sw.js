@@ -2,8 +2,8 @@ const CACHE_NAME = 'basketball-manager-cache-v2'
 const cachedAssets = [
     '/',
     '/data/countries.json',
-    '/data/firstNames.json',
-    '/data/lastNames.json',
+    '/data/names.json',
+    '/data/regions.json',
     '/generation',
 ]
 

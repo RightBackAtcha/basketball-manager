@@ -1,6 +1,6 @@
 // Offloads player generation onto a separate thread using a web worker
 
-import { Awards, Born, Country, Name, Player, Ratings } from "@/utils/PlayerTypes";
+import { Awards, Born, Country, College, Player, Ratings, Region } from "@/utils/PlayerTypes";
 
 // Weights for player age
 const ageDistribution = [
@@ -71,8 +71,22 @@ function weightedRandom(weights: number[]): number {
     return -1;
 }
 
+function randomCollege(colleges: College[], country: Country): string {
+    if (Math.random() > 0.08 && (country.name === 'United States of America' || country.name === 'Canada')) {
+        let collegeWeights = colleges.map(college => college.weight);
+        return (colleges[weightedRandom(collegeWeights) - 1].name);
+    }
+
+    if (Math.random() > 0.85) {
+        let collegeWeights = colleges.map(college => college.weight);
+        return (colleges[weightedRandom(collegeWeights) - 1].name);
+    }
+
+    return 'None';
+}
+
 // Generate player base
-function generatePlayerBase(countries: Country[], firstNames: Name[], lastNames: Name[], regions: Name[], tID: number): Player {
+function generatePlayerBase(countries: Country[], firstNames: any, lastNames:any, regions: Region[], colleges: College[], i:number): Player {
     // All country weights
     let countryWeights = countries.map(country => country.weight);
 
@@ -81,13 +95,11 @@ function generatePlayerBase(countries: Country[], firstNames: Name[], lastNames:
     let countryData = countries[randCountryID - 1];
 
     // Filter first names, last names and regions based on country
-    const filteredFirstNames = firstNames.filter(name => name.country_id === countryData.id);
-    const filteredLastNames = lastNames.filter(name => name.country_id === countryData.id);
     const filteredRegions = regions.filter(name => name.country_id === countryData.id);
 
     // Randomly select values
-    const firstName = filteredFirstNames[Math.floor(Math.random() * filteredFirstNames.length)].name;
-    const lastName = filteredLastNames[Math.floor(Math.random() * filteredLastNames.length)].name;
+    const firstName = (firstNames[countryData.id])[Math.floor(Math.random() * firstNames[countryData.id].length)];
+    const lastName = (lastNames[countryData.id])[Math.floor(Math.random() * lastNames[countryData.id].length)];
     const region = filteredRegions[Math.floor(Math.random() * filteredRegions.length)];
 
     const awards: Awards = {};
@@ -103,21 +115,23 @@ function generatePlayerBase(countries: Country[], firstNames: Name[], lastNames:
     return {
         first: firstName,
         last: lastName,
+        college: randomCollege(colleges, countryData),
         awards,
         born,
-        tID,
+        tID: 0,
+        pID: i,
         ratings
     };
 }
 
 // Handle messages from main thread
 onmessage = function (e: MessageEvent) {
-    const { countries, firstNames, lastNames, regions, totalPlayers, tID } = e.data;
-    const generatedPlayers: Player[] = [];
+    const { countries, firstNames, lastNames, regions, colleges, totalPlayers } = e.data;
+    let generatedPlayers: Player[] = [];
 
     // Generate requested number of players
     for (let i = 0 ; i < totalPlayers; i++) {
-        generatedPlayers.push(generatePlayerBase(countries, firstNames, lastNames, regions, tID));
+        generatedPlayers.push(generatePlayerBase(countries, firstNames, lastNames, regions, colleges, i));
     }
 
     // Send generated players back to main thread

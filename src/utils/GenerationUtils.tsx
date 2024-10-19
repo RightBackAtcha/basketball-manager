@@ -3,64 +3,76 @@
 import {useEffect, useState} from "react";
 
 import { fetchJSON } from '@/utils/DataUtils';
-import { Country, Name, Player } from "@/utils/PlayerTypes";
+import { Country, Region, Player, College, Names } from "@/utils/PlayerTypes";
+import { Team } from "@/utils/TeamTypes";
 
 interface GenerationProps {
     inputValue: string;
-    onGen: (players: Player[]) => void;
+    onGenPlayers: (players: Player[]) => void;
+    onGenTeams: (teams: Team[]) => void;
 }
 
-export default function GenerationUtils({ inputValue, onGen }: GenerationProps) {
-    // Variables for player generation and storage
+export default function GenerationUtils({ inputValue, onGenPlayers, onGenTeams }: GenerationProps) {
+    // Variables for player and team generation and storage
     const [countries, setCountries] = useState<Country[]>([]);
-    const [firstNames, setFirstnames] = useState<Name[]>([]);
-    const [lastNames, setLastnames] = useState<Name[]>([]);
-    const [regions, setRegions] = useState<Name[]>([]);
-    // const [generatedPlayers, setGeneratedPlayers] = useState<Player[]>([]);
+    const [names, setNames] = useState<Names | null>(null);
+    const [regions, setRegions] = useState<Region[]>([]);
+    const [colleges, setColleges] = useState<College[]>([]);
+    const [teams, setTeams] = useState<Team[]>([]);
 
     // Fetch JSON data
     useEffect(() => {
         async function loadData() {
             const countriesData = await fetchJSON('countries');
-            const firstNamesData = await fetchJSON('firstNames');
-            const lastNamesData = await fetchJSON('lastNames');
+            const namesData = await fetchJSON('names');
             const regionsData = await fetchJSON('regions');
+            const collegesData = await fetchJSON('colleges');
+            const teamsData = await fetchJSON('teams');
 
             setCountries(countriesData);
-            setFirstnames(firstNamesData);
-            setLastnames(lastNamesData);
             setRegions(regionsData);
+            setColleges(collegesData);
+            setNames(namesData);
+            setTeams(teamsData);
         }
+
         loadData();
     }, []);
 
-    const handleGen = async (generatedPlayers: Player[]) => {
-        const worker = new Worker(new URL('../workers/PlayerGenerationWorker.ts', import.meta.url))
-
+    const handleCombinedGen = async() => {
         const totalPlayers = Number(inputValue);
-        const tID = 1;
+        if (isNaN(totalPlayers) || totalPlayers <= 0) {
+            console.error("Invalid input value:", inputValue);
+            return;
+        }
 
-        if (!isNaN(totalPlayers) && (worker && totalPlayers > 0)) {
-            worker.postMessage({ countries, firstNames, lastNames, regions, totalPlayers, tID });
+        // Create worker for team gen
+        const teamWorker = new Worker(new URL('../workers/TeamGenerationWorker.ts', import.meta.url))
+        const numTeams = 30;
 
-            worker.onmessage = function (e: MessageEvent<Player[]>) {
+        teamWorker.postMessage({ numTeams, teams });
+
+        teamWorker.onmessage = function (e: MessageEvent<Team[]>) {
+            const teams = e.data;
+            onGenTeams(teams);
+
+            // Create worker for player gen
+            const playerWorker = new Worker(new URL('../workers/PlayerGenerationWorker.ts', import.meta.url))
+            const firstNames = names?.firstNames;
+            const lastNames = names?.lastNames;
+
+            playerWorker.postMessage({ countries, firstNames, lastNames, regions, colleges, totalPlayers });
+
+            playerWorker.onmessage = function (e: MessageEvent<Player[]>) {
                 const players = e.data;
-                onGen(players);
-                // setGeneratedPlayers(players);
-                //
-                console.log("Generated Players: ", players);
+                onGenPlayers(players);
+                console.log("Generated Players:", players);
+
+                playerWorker.terminate();
+                teamWorker.terminate();
             }
-        } else {
-            console.error("Invalid input value: ", inputValue);
         }
     }
 
-    // Handle storing of player data
-    // const handleStore = async() => {
-    //     for (const player of generatedPlayers) {
-    //         await storePlayerInDB(player); // Store each generated player
-    //     }
-    // }
-
-    return { handleGen };
+    return { handleGen: handleCombinedGen };
 }

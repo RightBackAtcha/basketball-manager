@@ -1,4 +1,4 @@
-// Define types for game
+// Define types for players
 export type Awards = {
     season?: number;
     type?: string;
@@ -34,13 +34,19 @@ export type Born = {
     location: string;
 }
 
+export type College = {
+    name: string;
+    weight: number;
+}
+
 export type Player = {
     awards: Awards;
     born: Born;
     first: string;
     last: string;
+    college: string;
     tID: number;
-    pID?: number;
+    pID: number;
     ratings: Ratings[];
 }
 
@@ -50,7 +56,16 @@ export type Country = {
     weight: number;
 }
 
-export type Name = {
+export type Region = {
     name: string;
     country_id: number;
+}
+
+export type Names = {
+    firstNames: {
+        [key: string]: string[];
+    };
+    lastNames: {
+        [key: string]: string[];
+    }
 }

@@ -1,6 +1,7 @@
 // Data related functions
 
 import { Player } from "@/utils/PlayerTypes";
+import { Team } from "@/utils/TeamTypes";
 
 // Database name and version
 const dbName = 'league';
@@ -14,15 +15,60 @@ export function openDatabase(): Promise<IDBDatabase> {
         // Handle upgrades
         request.onupgradeneeded = function(event) {
             const db = (event.target as IDBOpenDBRequest).result;
-            const objectStorePlayers = db.createObjectStore('players', { keyPath: 'pID', autoIncrement: true });
-            const objectStoreTeams = db.createObjectStore('teams', { keyPath: 'tID', autoIncrement: true });
+            const objectStorePlayers = db.createObjectStore('players', { keyPath: 'pID', autoIncrement: false });
+            const objectStoreTeams = db.createObjectStore('teams', { keyPath: 'tID', autoIncrement: false });
             objectStorePlayers.createIndex("tID", "tID", { unique: false });
         };
 
         // Handle success
         request.onsuccess = function(event) {
+            const db = (event.target as IDBOpenDBRequest).result;
+
             resolve((event.target as IDBOpenDBRequest).result);
         };
+
+        // Handle errors
+        request.onerror = function(event) {
+            reject(`Database error: ${(event.target as IDBOpenDBRequest).error}`);
+        }
+    })
+}
+
+export function wipeDatabase(): Promise<IDBDatabase> {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(dbName, dbVersion);
+
+        // Handle upgrades
+        request.onupgradeneeded = function(event) {
+            const db = (event.target as IDBOpenDBRequest).result;
+
+            // Create object stores if none exist
+            if (!db.objectStoreNames.contains('players')) {
+                const objectStorePlayers = db.createObjectStore('players', { keyPath: 'pID', autoIncrement: false });
+                objectStorePlayers.createIndex("tID", "tID", { unique: false });
+            }
+            if (!db.objectStoreNames.contains('teams')) {
+                const objectStoreTeams = db.createObjectStore('teams', { keyPath: 'tID', autoIncrement: false });
+            }
+        };
+
+        // Handle success
+        request.onsuccess = function(event) {
+            const db = (event.target as IDBOpenDBRequest).result;
+
+            const transaction1 = db.transaction('players', 'readwrite');
+            const transaction2 = db.transaction('teams', 'readwrite');
+
+            const playersStore = transaction1.objectStore('players');
+            playersStore.clear();
+
+            const teamsStore = transaction2.objectStore('teams');
+            teamsStore.clear();
+
+            console.log("Cleared players and teams object stores.");
+
+            resolve((event.target as IDBOpenDBRequest).result);
+        }
 
         // Handle errors
         request.onerror = function(event) {
@@ -63,5 +109,31 @@ export async function storePlayerInDB(player: Player | null) {
         };
     } catch(error) {
         console.error('Failed to store player: ', error);
+    }
+}
+
+export async function storeTeamInDB(team: Team | null) {
+    if(!team) {
+        console.error("Cannot store null team.");
+        return;
+    }
+
+    try {
+        const db = await openDatabase();
+        const transaction = db.transaction('teams', 'readwrite');
+        const objectStore = transaction.objectStore('teams');
+
+        const request = objectStore.add(team); // Add team to object store
+
+        // Handle success and error for adding teams
+        request.onsuccess = function (event: any) {
+            console.log(`Team added successfully: ${event.target.result}`);
+        };
+
+        request.onerror = function (event: any) {
+            console.log(`Team failed with error: ${event.target.error}`);
+        }
+    } catch(error) {
+        console.error('Failed to store team:', error);
     }
 }
