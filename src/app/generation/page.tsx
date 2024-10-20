@@ -8,7 +8,7 @@ import InputNumber from '@/components/ui/InputNumber';
 import GenerationUtils from '@/utils/GenerationUtils';
 
 import { Player } from "@/utils/PlayerTypes";
-import { storePlayerInDB, storeTeamInDB, wipeDatabase } from "@/utils/DataUtils";
+import { storePlayerInDB, storeTeamInDB } from "@/utils/DataUtils";
 import {Team} from "@/utils/TeamTypes";
 
 export default function Generator() {
@@ -51,8 +51,6 @@ export default function Generator() {
 
     // Handle storing of player data
     const handleStore = async() => {
-        await wipeDatabase()
-
         for (const player of generatedPlayers) {
             await storePlayerInDB(player); // Store each generated player
         }

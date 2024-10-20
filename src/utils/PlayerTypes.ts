@@ -29,6 +29,11 @@ export type Ratings = {
     year: number;
 }
 
+export type Badge = {
+    name: string;
+    boost: string;
+}
+
 export type Born = {
     year: number;
     location: string;
@@ -47,7 +52,12 @@ export type Player = {
     college: string;
     tID: number;
     pID: number;
-    ratings: Ratings[];
+    ratings: Ratings;
+    pos?: string;
+    hgtInches?: number;
+    wingSpanInches?: number;
+    badges?: Badge[];
+
 }
 
 export type Country = {

@@ -24,7 +24,7 @@ export default function Header() {
                         textDecoration: 'none',
                         paddingRight: '5px',
                     }}>
-                        <Image src={'/images/ball.png'} alt='Home Button' width={40} height={40} />
+                        <Image src={'/images/ball.png'} alt='Home Button' width={40} height={40}/>
                     </Link>
                 </div>
                 <div style={{
@@ -47,7 +47,31 @@ export default function Header() {
                             fontSize: '25px',
                             marginBottom: '-5px',
                         }}>
-                        Generator
+                            Generator
+                        </p>
+                    </Link>
+                </div>
+                <div style={{
+                    marginLeft: '10px',
+                    marginTop: '-15px',
+                    marginBottom: '-5px',
+                    width: '5px',
+                    height: '65px',
+                    backgroundColor: 'black'
+                }}></div>
+                <div style={{
+                    paddingLeft: '20px',
+                    marginTop: '-20px'
+                }}>
+                    <Link href="/teams" style={{
+                        textDecoration: 'none',
+                        color: '#FFFFFF',
+                    }}>
+                        <p style={{
+                            fontSize: '25px',
+                            marginBottom: '-5px',
+                        }}>
+                            Teams
                         </p>
                     </Link>
                 </div>
