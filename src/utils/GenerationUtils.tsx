@@ -3,8 +3,8 @@
 import {useEffect, useState} from "react";
 
 import { fetchJSON } from '@/utils/DataUtils';
-import { Country, Region, Player, College, Names } from "@/utils/PlayerTypes";
-import { Team } from "@/utils/TeamTypes";
+import { Country, Region, Player, College, Names } from "@/utils/player/PlayerTypes";
+import { Team } from "@/utils/teams/TeamTypes";
 
 interface GenerationProps {
     inputValue: string;

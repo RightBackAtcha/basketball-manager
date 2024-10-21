@@ -5,9 +5,9 @@ import styles from "./page.module.css";
 import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 
-import { Team } from "@/utils/TeamTypes";
+import { Team } from "@/utils/teams/TeamTypes";
 import { db } from "@/utils/db";
-import { Player } from "@/utils/PlayerTypes";
+import { Player } from "@/utils/player/PlayerTypes";
 import { usePathname } from "next/navigation";
 
 export default function TeamRosters(){
@@ -19,9 +19,9 @@ export default function TeamRosters(){
     const [name, setName] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [roster, setRoster] = useState<Player[]>([]);
-
     // Team ID fetched from url
     const teamID = Number((usePathname().split("/"))[2]);
+
 
     // Extract roster IDs and find these players
     const handleRoster = () => {
@@ -35,12 +35,11 @@ export default function TeamRosters(){
             if (rosterIDs !== undefined) {
                 // Search through until whole roster is found
                 const newRoster = rosterIDs.map((id) => players.find((p) => p.pID === id) as Player);
-
                 setRoster(newRoster);
             }
         }
         setIsLoading(false);
-    }
+    };
 
     useEffect(() => {
         if(teams && players) {
@@ -85,21 +84,26 @@ export default function TeamRosters(){
                         <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Name</th>
                         <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Age</th>
                         <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Pos</th>
+                        <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Height</th>
                         <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Ovr</th>
                         <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Pot</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {roster?.map((player: Player) => (
+                    {roster?.map((player: Player) => {
+                        // Calculate height in feet and inches
+                        const height = `${Math.floor(player.hgtInches! / 12)}'${player.hgtInches! % 12} `
+                        return (
                         <tr key={player.pID} className={styles.playerNames}>
                             <td>{player.first} {player.last}</td>
-                            <td>{2024 - player.born.year}</td>
+                            <td>{2024 - player.born!.year}</td>
                             <td>{player.pos}</td>
-                            <td></td>
-                            <td>{player.ratings.ovr}</td>
-                            <td>{player.ratings.pot}</td>
+                            <td>{height}</td>
+                            <td>{player.ratings!.ovr}</td>
+                            <td>{player.ratings!.pot}</td>
                         </tr>
-                    ))}
+                        );
+                    })}
                     </tbody>
                 </table>
             </div>

@@ -1,7 +1,7 @@
 import Dexie, { EntityTable } from 'dexie';
 
-import { Player } from "@/utils/PlayerTypes"
-import { Team } from "@/utils/TeamTypes"
+import { Player } from "@/utils/player/PlayerTypes"
+import { Team } from "@/utils/teams/TeamTypes"
 
 const db = new Dexie(`league`) as Dexie & {
     players: EntityTable<

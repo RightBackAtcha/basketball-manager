@@ -1,5 +1,5 @@
 // Offload team generation and assigning players to teams
-import {Team} from "@/utils/TeamTypes";
+import {Team} from "@/utils/teams/TeamTypes";
 import { fetchJSON } from "@/utils/DataUtils";
 
 function createTeam(numTeams: number, teams: Team[]): Team[] {

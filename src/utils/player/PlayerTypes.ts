@@ -26,6 +26,7 @@ export type Ratings = {
     defIQ: number;
     ovr: number;
     pot: number;
+    season?: number;
 }
 
 export type Badge = {

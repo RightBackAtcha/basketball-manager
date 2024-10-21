@@ -7,9 +7,9 @@ import Button from '@/components/ui/Button';
 import InputNumber from '@/components/ui/InputNumber';
 import GenerationUtils from '@/utils/GenerationUtils';
 
-import { Player } from "@/utils/PlayerTypes";
+import { Player } from "@/utils/player/PlayerTypes";
 import { storePlayerInDB, storeTeamInDB } from "@/utils/DataUtils";
-import {Team} from "@/utils/TeamTypes";
+import {Team} from "@/utils/teams/TeamTypes";
 
 export default function Generator() {
 
@@ -77,7 +77,7 @@ export default function Generator() {
                 if (player.pID !== null) {
                     player.tID = team.tID;
                     team.roster
-                        .push(player.pID);
+                        .push(player.pID!);
 
                     // Store assigned player and remove from playerArray
                     assignedPlayers.push(player);

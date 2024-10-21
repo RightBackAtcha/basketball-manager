@@ -5,7 +5,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { useRouter } from "next/navigation";
 
 import { db } from "@/utils/db";
-import { Team } from "@/utils/TeamTypes";
+import { Team } from "@/utils/teams/TeamTypes";
 
 export default function ShowRosters() {
     // Import teams from Dexie

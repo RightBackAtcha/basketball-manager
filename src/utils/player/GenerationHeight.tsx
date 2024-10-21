@@ -1,5 +1,5 @@
 import { gaussianRandom } from "@/utils/DataUtils";
-import { Player, Position } from "@/utils/PlayerTypes";
+import { Player, Position } from "@/utils/player/PlayerTypes";
 
 export default function GenerationHeight(): Player {
     // Player variable that we will return with its pos and height

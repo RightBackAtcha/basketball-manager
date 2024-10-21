@@ -1,8 +1,8 @@
 // Offloads player generation onto a separate thread using a web worker
 
-import { Awards, Born, Country, College, Player, Ratings, Region, Position } from "@/utils/PlayerTypes";
-import GenerationRatings from "@/utils/GenerationRatings";
-import GenerationHeight from "@/utils/GenerationHeight";
+import { Awards, Born, Country, College, Player, Ratings, Region, Position } from "@/utils/player/PlayerTypes";
+import GenerationRatings from "@/utils/player/GenerationRatings";
+import GenerationHeight from "@/utils/player/GenerationHeight";
 
 // Weights for player age
 const ageDistribution = [
@@ -127,7 +127,7 @@ function generatePlayerBase(countries: Country[], firstNames: any, lastNames:any
         pID: i,
         pos: player.pos,
         hgtInches: player.hgtInches,
-        ratings: GenerationRatings(player.pos, (2024 - born.year)),
+        ratings: GenerationRatings(player.pos!, (2024 - born.year)),
     };
 }
 

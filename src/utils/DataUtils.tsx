@@ -1,7 +1,7 @@
 // Data related functions
 
-import { Player } from "@/utils/PlayerTypes";
-import { Team } from "@/utils/TeamTypes";
+import { Player } from "@/utils/player/PlayerTypes";
+import { Team } from "@/utils/teams/TeamTypes";
 import { db } from "@/utils/db";
 
 // Fetch JSON data from API route
