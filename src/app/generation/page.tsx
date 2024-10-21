@@ -8,7 +8,7 @@ import InputNumber from '@/components/ui/InputNumber';
 import GenerationUtils from '@/utils/GenerationUtils';
 
 import { Player } from "@/utils/player/PlayerTypes";
-import { storePlayerInDB, storeTeamInDB } from "@/utils/DataUtils";
+import { createSave } from "@/utils/DataUtils";
 import {Team} from "@/utils/teams/TeamTypes";
 
 export default function Generator() {
@@ -41,12 +41,7 @@ export default function Generator() {
 
     // Handle storing of player data
     const handleStore = async() => {
-        for (const player of generatedPlayers) {
-            await storePlayerInDB(player); // Store each generated player
-        }
-        for (const team of generatedTeams) {
-            await storeTeamInDB(team);
-        }
+        await createSave(generatedPlayers, generatedTeams); // Store generating teams and players in league
     }
 
     const populateTeams = async () => {
@@ -90,6 +85,8 @@ export default function Generator() {
         }
 
         console.log("Players assigned to teams:", generatedTeams);
+        setIsPlayersGenerated(false);
+        setIsTeamsGenerated(false);
     }
 
     const { handleGen } = GenerationUtils({

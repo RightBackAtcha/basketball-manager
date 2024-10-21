@@ -21,13 +21,12 @@
 .playerNames {
     background: #ff7141;
     margin: 0;
-    padding: 10px 0 10px 5px;
     white-space: nowrap;
     overflow: hidden;
     text-align: left;
+    width: 0.01%
 }
 
 .playerNames:nth-child(odd) {
     background: #ffa688;
-    padding: 0 0 0 5px;
 }

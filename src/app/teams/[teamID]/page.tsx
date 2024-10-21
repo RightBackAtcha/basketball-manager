@@ -9,6 +9,7 @@ import { Team } from "@/utils/teams/TeamTypes";
 import { db } from "@/utils/db";
 import { Player } from "@/utils/player/PlayerTypes";
 import { usePathname } from "next/navigation";
+import GetCountryFlag from "@/utils/player/GetCountryFlag";
 
 export default function TeamRosters(){
     // Import players and teams from specific league
@@ -28,7 +29,11 @@ export default function TeamRosters(){
         if (teams !== undefined && players !== undefined) {
             // Set states
             const selectedTeam = teams[teamID - 1]
-            setName(selectedTeam.region + ' ' + selectedTeam.name);
+            if(!selectedTeam){
+                setIsLoading(false);
+                return; // Return, no valid team found (wrong link)
+            }
+            setName((selectedTeam.region + ' ' + selectedTeam.name));
 
             // Create const for player search
             const rosterIDs = selectedTeam?.roster;
@@ -48,12 +53,7 @@ export default function TeamRosters(){
         }
     }, [players]);
 
-    if (isLoading) {
-        return (<>
-            Loading...
-        </>);
-    }
-
+    // Display error if valid team not found
     if (!teams || teamID > teams.length) {
         return (<>
             <div style={{
@@ -62,6 +62,12 @@ export default function TeamRosters(){
             }}>
                 <h1> Error: This team does not exist </h1>
             </div>
+        </>);
+    }
+
+    if (isLoading) {
+        return (<>
+            Loading...
         </>);
     }
 
@@ -81,26 +87,27 @@ export default function TeamRosters(){
                 }}>
                     <thead>
                     <tr>
-                        <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Name</th>
-                        <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Age</th>
-                        <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Pos</th>
-                        <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Height</th>
-                        <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Ovr</th>
-                        <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden"}}>Pot</th>
+                        <th style={{textAlign: "left", whiteSpace: "nowrap", overflow: "hidden", padding: `0 0 0 10px`, width: "40%"}}>Name</th>
+                        <th style={{textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", padding: 0, width: "10%"}}>Age</th>
+                        <th style={{textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", padding: 0, width: "5%"}}>Pos</th>
+                        <th style={{textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", padding: 0, width: "10%"}}>Height</th>
+                        <th style={{textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", padding: 0, width: "10%"}}>Ovr</th>
+                        <th style={{textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", padding: 0, width: "10%"}}>Pot</th>
                     </tr>
                     </thead>
                     <tbody>
                     {roster?.map((player: Player) => {
                         // Calculate height in feet and inches
-                        const height = `${Math.floor(player.hgtInches! / 12)}'${player.hgtInches! % 12} `
+                        const height = `${Math.floor(player.hgtInches! / 12)}'${player.hgtInches! % 12} `;
+                        const country = ((player.born!.location).split(", "))[1];
                         return (
                         <tr key={player.pID} className={styles.playerNames}>
-                            <td>{player.first} {player.last}</td>
-                            <td>{2024 - player.born!.year}</td>
-                            <td>{player.pos}</td>
-                            <td>{height}</td>
-                            <td>{player.ratings!.ovr}</td>
-                            <td>{player.ratings!.pot}</td>
+                            <td style={{padding: "0 0 0 10px"}}>{player.first} {player.last} <span style={{fontSize: "20px"}}>{GetCountryFlag(country)}</span></td>
+                            <td style={{textAlign: "center"}}>{2024 - player.born!.year}</td>
+                            <td style={{textAlign: "center"}}>{player.pos}</td>
+                            <td style={{textAlign: "center"}}>{height}</td>
+                            <td style={{textAlign: "center"}}>{player.ratings!.ovr}</td>
+                            <td style={{textAlign: "center"}}>{player.ratings!.pot}</td>
                         </tr>
                         );
                     })}

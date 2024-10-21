@@ -5,6 +5,8 @@ const ratingsWeight = [
     0.00, 0.00, 0.11, 0.09, 0.07, 0.05, 0.07, 0.04, 0.07, 0.06,
     0.03, 0.05, 0.06, 0.05, 0.08, 0.05, 0.02, 0.04, 0.04, 0.04, 0.05];
 
+const STARTING_YEAR = 2024;
+
 const positionRatings = {
     PG: {
         ovr: { mean: 1, std: 1 },
@@ -28,6 +30,7 @@ const positionRatings = {
         strength: { mean: 45, std: 10 },
         close: { mean: 60, std: 10 },
         agility: { mean: 70, std: 10 },
+        season: { mean: STARTING_YEAR, std: 0}
     },
     SG: {
         ovr: { mean: 0, std: 0 },
@@ -51,6 +54,7 @@ const positionRatings = {
         strength: { mean: 45, std: 10 },
         close: { mean: 62, std: 10 },
         agility: { mean: 65, std: 10 },
+        season: { mean: STARTING_YEAR, std: 0}
     },
     SF: {
         ovr: { mean: 0, std: 0 },
@@ -74,6 +78,7 @@ const positionRatings = {
         strength: { mean: 50, std: 10 },
         close: { mean: 64, std: 10 },
         agility: { mean: 62, std: 10 },
+        season: { mean: STARTING_YEAR, std: 0}
     },
     PF: {
         ovr: { mean: 0, std: 0 },
@@ -97,6 +102,7 @@ const positionRatings = {
         strength: { mean: 55, std: 10 },
         close: { mean: 60, std: 10 },
         agility: { mean: 58, std: 10 },
+        season: { mean: STARTING_YEAR, std: 0}
     },
     C: {
         ovr: { mean: 0, std: 0 },
@@ -120,6 +126,7 @@ const positionRatings = {
         strength: { mean: 60, std: 10 },
         close: { mean: 58, std: 10 },
         agility: { mean: 54, std: 10 },
+        season: { mean: STARTING_YEAR, std: 0}
     },
 };
 
