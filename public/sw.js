@@ -4,7 +4,9 @@ const cachedAssets = [
     '/data/countries.json',
     '/data/names.json',
     '/data/regions.json',
+    '/data/colleges.json',
     '/generation',
+    '/teams'
 ]
 
 // Install event for cache
