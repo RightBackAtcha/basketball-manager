@@ -1,37 +1,21 @@
 #teamsList {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
     list-style-type: none;
     cursor: default;
     align-items: center;
 
-    font-size: 25px;
-    background: #ff7141;
-    height: 1170px;
-    margin-left: 25px;
-    margin-right: 200px;
+    font-size: 40px;
+    height: auto;
     border-radius: 10px;
-    padding-left: 30px;
-
-    gap: 5px;
+    gap: 20px;
 }
 
-#rosterList {
-    flex: 2;
-    cursor: default;
-    list-style: none;
-    font-size: 25px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    padding-top: 5px;
-    height: 800px;
-
-    gap: 10px;
-}
-
-#rosterContainer {
+#teamContainer {
     display: flex;
     flex-direction: row;
-    height: 90vh;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: auto;
 }

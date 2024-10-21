@@ -1,6 +1,8 @@
 // Offloads player generation onto a separate thread using a web worker
 
-import { Awards, Born, Country, College, Player, Ratings, Region } from "@/utils/PlayerTypes";
+import { Awards, Born, Country, College, Player, Ratings, Region, Position } from "@/utils/PlayerTypes";
+import GenerationRatings from "@/utils/GenerationRatings";
+import GenerationHeight from "@/utils/GenerationHeight";
 
 // Weights for player age
 const ageDistribution = [
@@ -104,12 +106,15 @@ function generatePlayerBase(countries: Country[], firstNames: any, lastNames:any
 
     const awards: Awards = {};
 
-    const ratings: Ratings[] = [];
-
+    // Create type for where player was born
     const born: Born = {
         year: 2024 - weightedRandomAge(ageDistribution),
         location: (region.name + ', ' + countryData.name)
     };
+
+    // Randomly pick position for player <--Temp-->
+    const pos: Position[] = ["PG", "SG", "SF", "PF", "C"];
+    const player: Player = GenerationHeight();
 
     // Return generated player object
     return {
@@ -120,7 +125,9 @@ function generatePlayerBase(countries: Country[], firstNames: any, lastNames:any
         born,
         tID: 0,
         pID: i,
-        ratings
+        pos: player.pos,
+        hgtInches: player.hgtInches,
+        ratings: GenerationRatings(player.pos, (2024 - born.year)),
     };
 }
 

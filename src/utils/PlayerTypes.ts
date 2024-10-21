@@ -26,7 +26,6 @@ export type Ratings = {
     defIQ: number;
     ovr: number;
     pot: number;
-    year: number;
 }
 
 export type Badge = {
@@ -45,20 +44,22 @@ export type College = {
 }
 
 export type Player = {
-    awards: Awards;
-    born: Born;
-    first: string;
-    last: string;
-    college: string;
-    tID: number;
-    pID: number;
-    ratings: Ratings;
-    pos?: string;
+    awards?: Awards;
+    born?: Born;
+    first?: string;
+    last?: string;
+    college?: string;
+    tID?: number;
+    pID?: number;
+    ratings?: Ratings;
+    pos?: Position;
     hgtInches?: number;
     wingSpanInches?: number;
     badges?: Badge[];
 
 }
+
+export type Position = "PG" | "SG" | "SF" | "PF" | "C";
 
 export type Country = {
     id: number;

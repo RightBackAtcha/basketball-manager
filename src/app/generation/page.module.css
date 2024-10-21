@@ -3,9 +3,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 10vh;
-    width: 50%;
-    transform: translate(50%, 50%);
+    margin-top: 0;
+    width: 100%;
+    transform: translate(0, 20%);
 }
 
 #boxButton {
@@ -22,6 +22,7 @@
     display: flex;
     flex-direction: column;
     justify-content: start;
+    align-items: center;
     width: 50%;
     padding-left: 10px;
     padding-right: 10px;

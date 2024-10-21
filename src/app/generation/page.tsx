@@ -19,20 +19,10 @@ export default function Generator() {
     const [inputValue, setInputValue] = useState('');
     const [generatedPlayers, setGeneratedPlayers] = useState<Player[]>([]);
     const [generatedTeams, setGeneratedTeams] = useState<Team[]>([]);
+    const [height, setHeight] = useState('');
 
     const [isPlayersGenerated, setIsPlayersGenerated] = useState(false);
     const [isTeamsGenerated, setIsTeamsGenerated] = useState(false);
-
-    useEffect(() => {
-        if (isPlayersGenerated && isTeamsGenerated) {
-            populateTeams();
-        }
-
-        const teamInfo = generatedTeams[Number(player?.tID) - 1];
-        if (teamInfo) {
-            setTeam(`${teamInfo.region} ${teamInfo.name}`);
-        }
-    }, [isPlayersGenerated, isTeamsGenerated, player, generatedTeams]);
 
     const handleInputChange = (value: string) => {
         setInputValue(value);
@@ -112,15 +102,39 @@ export default function Generator() {
         await handleGen();
     };
 
+    // Populate teams when players are finished generating
+    useEffect(() => {
+        if (isPlayersGenerated && isTeamsGenerated) {
+            populateTeams();
+        }
+
+        const teamInfo = generatedTeams[Number(player?.tID) - 1];
+        if (teamInfo) {
+            setTeam(`${teamInfo.region} ${teamInfo.name}`);
+        }
+    }, [isPlayersGenerated, isTeamsGenerated, player, generatedTeams]);
+
+    // Check for change in player state
+    useEffect(() => {
+        if (player?.hgtInches !== undefined) {
+            const feet = Math.floor(player.hgtInches / 12);
+            const inches = player.hgtInches % 12;
+            setHeight(`${feet}'${inches}"`);
+        }
+    }, [player])
+
     return (
         <>
             <div id={styles.genContainer}>
                 <div id={styles.playerData}>
-                    <h2>Birth Place: {player?.born.location}</h2>
+                    <h2>Birth Place: {player?.born?.location}</h2>
                     <h2>College: {player?.college}</h2>
                     <h2>Name: {player?.first} {player?.last}</h2>
-                    <h2>Age: {player?.born.year}</h2>
+                    <h2>Age: {player?.born?.year}</h2>
                     <h2>Team: {team}</h2>
+                    <h2>Height: {height}</h2>
+                    <h2>Ovr: {player?.ratings?.ovr}</h2>
+                    <h2>Pot: {player?.ratings?.pot}</h2>
                 </div>
                 <div id={styles.inputBox}>
                 <h3>Players to generate:</h3>
