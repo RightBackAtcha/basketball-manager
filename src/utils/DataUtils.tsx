@@ -3,6 +3,7 @@
 import { Player } from "@/utils/player/PlayerTypes";
 import { Team } from "@/utils/teams/TeamTypes";
 import { db } from "@/utils/db";
+import Dexie from "dexie";
 
 // Fetch JSON data from API route
 export async function fetchJSON(filename: string) {
@@ -12,32 +13,42 @@ export async function fetchJSON(filename: string) {
     return res.json();
 }
 
-// Store current created player into persistent Dexie DB
-export async function storePlayerInDB(player: Player | null) {
-    if(!player) {
+// Create league save by generating players and creating teams
+export async function createSave(players: Player[] | null, teams: Team[]) {
+    if(!players) {
         console.error('Cannot store a null player');
         return;
     }
 
+    if (await Dexie.exists('league')) {
+        if(confirm("League already exists. Would you like to delete?")) {
+            try {
+                const delPlayers = await db.players.clear();
+                const delTeams = await db.teams.clear();
+
+                // Bulk add teams and players to Dexie
+                const idPlayers = await db.players.bulkAdd(players);
+                const idTeams = await db.teams.bulkAdd(teams);
+
+                console.log("League created!");
+            } catch (error) {
+                console.error(`Failed to create league: ${error}`);
+            }
+
+            return;
+        }
+
+        return ;
+    }
+
     try {
-        const id = await db.players.add(player);
-    } catch(error) {
+        const id = await db.players.bulkAdd(players);
+    } catch (error) {
         console.error(`Failed to store player: ${error}`);
     }
-}
 
-// Store player in Dexie DB
-export async function storeTeamInDB(team: Team | null) {
-    if(!team) {
-        console.error("Cannot store null team.");
-        return;
-    }
+    return;
 
-    try {
-        const id = await db.teams.add(team);
-    } catch(error) {
-        console.error(`Failed to store team: ${error}`);
-    }
 }
 
 // Gaussian random bell curve function for normal distribution
