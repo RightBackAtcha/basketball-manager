@@ -15,16 +15,15 @@ export default function Header() {
                 paddingTop: '10px',
                 paddingBottom: '5px',
                 margin: 0,
-                backgroundColor: '#FF7141',
-                color: '#FF7141',
-                boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                backgroundColor: '#0e0e0e',
+                color: '#0e0e0e',
             }}>
                 <div>
                     <Link href="/" style={{
                         textDecoration: 'none',
                         paddingRight: '5px',
                     }}>
-                        <Image src={'/images/ball.png'} alt='Home Button' width={40} height={40}/>
+                        <Image src={'/img/ball-white.png'} alt='Home' width={40} height={40}/>
                     </Link>
                 </div>
                 <div style={{

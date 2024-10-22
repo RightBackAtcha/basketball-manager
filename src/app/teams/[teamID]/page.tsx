@@ -4,12 +4,13 @@ import styles from "./page.module.css";
 
 import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
+import Image from 'next/image';
 
 import { Team } from "@/utils/teams/TeamTypes";
 import { db } from "@/utils/db";
 import { Player } from "@/utils/player/PlayerTypes";
 import { usePathname } from "next/navigation";
-import GetCountryFlag from "@/utils/player/GetCountryFlag";
+import DisplayFlag from "@/components/ui/DisplayFlag";
 
 export default function TeamRosters(){
     // Import players and teams from specific league
@@ -22,7 +23,6 @@ export default function TeamRosters(){
     const [roster, setRoster] = useState<Player[]>([]);
     // Team ID fetched from url
     const teamID = Number((usePathname().split("/"))[2]);
-
 
     // Extract roster IDs and find these players
     const handleRoster = () => {
@@ -102,7 +102,7 @@ export default function TeamRosters(){
                         const country = ((player.born!.location).split(", "))[1];
                         return (
                         <tr key={player.pID} className={styles.playerNames}>
-                            <td style={{padding: "0 0 0 10px"}}>{player.first} {player.last} <span style={{fontSize: "20px"}}>{GetCountryFlag(country)}</span></td>
+                            <td style={{padding: "0 0 0 10px"}}>{player.first} {player.last} <DisplayFlag countryName={country} width={21} height={28} /></td>
                             <td style={{textAlign: "center"}}>{2024 - player.born!.year}</td>
                             <td style={{textAlign: "center"}}>{player.pos}</td>
                             <td style={{textAlign: "center"}}>{height}</td>

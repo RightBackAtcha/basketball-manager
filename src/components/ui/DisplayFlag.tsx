@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const countryCodes: {[name: string]: string} = {
     "United States of America": "US",
     "Canada": "CA",
@@ -191,13 +193,22 @@ const countryCodes: {[name: string]: string} = {
     "Zimbabwe": "ZW"
 }
 
-export default function GetCountryFlag(code: string) {
-    const code2 = countryCodes[code];
-
-    const CodePoints = code2
-        .toUpperCase()
-        .split('')
-        .map(char => 127397 + char.charCodeAt(0))
-
-    return String.fromCodePoint(...CodePoints)
+interface FlagProps {
+    countryName: string;
+    width: number;
+    height: number
 }
+
+const DisplayFlag = (flag: FlagProps) => {
+    const code = countryCodes[flag.countryName].toLowerCase()
+    return (
+        <span style={{display: 'inline-block'}}>
+            <Image
+                src={`/flags/4x3/${code}.svg`} alt={`${code}`}
+                width={flag.width} height={flag.height}
+            />
+        </span>
+    )
+}
+
+export default DisplayFlag;
