@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 import styles from "./page.module.css";
 import Button from '@/components/ui/Button';
@@ -9,7 +9,7 @@ import GenerationUtils from '@/utils/GenerationUtils';
 
 import { Player } from "@/utils/player/PlayerTypes";
 import { createSave } from "@/utils/DataUtils";
-import {Team} from "@/utils/teams/TeamTypes";
+import { Team } from "@/utils/teams/TeamTypes";
 
 export default function Generator() {
 
