@@ -1,25 +1,37 @@
+#container {
+    display: flex;
+    height: 90%;
+}
+
+#centerImage, #infoContainer {
+    width: 50%;
+}
+
 #titleContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     height: auto;
     width: auto;
-    margin-top: 13vh;
-    margin-bottom: 10vh;
 }
 
 #centerImage {
-    flex: 1;
-    margin: 0;
-    width: 15vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#centerImage img {
+    max-width: 50%;
     height: auto;
 }
 
-#titleHeader {
-    flex: 2;
+#infoContainer {
+    padding: 0 0 0 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 40px;
     margin: 0;
-    font-size: 2.5vw;
-    letter-spacing: 2px;
-    word-spacing: 2vw;
-    color: #FFFFFF;
 }
