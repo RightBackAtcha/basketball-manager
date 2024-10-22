@@ -1,10 +1,13 @@
 // Custom number only input for next.js
 
+import React from "react";
+
 interface InputProps {
     inputValue: string;
     onChange: (value: string) => void;
     min?: number;
     max?: number;
+    placeHolder?: string;
 }
 
 const InputNumber: React.FC<InputProps> = ( props: InputProps) => {
@@ -42,7 +45,7 @@ const InputNumber: React.FC<InputProps> = ( props: InputProps) => {
                 onChange={handleInputChange}
                 min={props.min}
                 max={props.max}
-                placeholder={'1 - 500'}
+                placeholder={props.placeHolder}
                 style={{
                     marginTop: '12px',
                     marginLeft: '10px',

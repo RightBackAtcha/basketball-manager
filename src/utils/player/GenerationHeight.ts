@@ -31,28 +31,28 @@ export default function GenerationHeight(): Player {
 
     player.hgtInches = heightInches;
     // Position based on height
-    if (heightInches <= 76) { // Height between 5'8" and 6'4"
+    if (heightInches <= 77) { // Height between 5'8" and 6'5"
         const temp = Math.random();
 
-        if (temp > 0.92) {
+        if (temp > 0.98) {
             player.pos = "SF";
-        } else if (temp > 0.47) {
+        } else if (temp > 0.55) {
             player.pos = "SG";
         } else {
             player.pos = "PG";
         }
     }
 
-    else if (heightInches < 82 && heightInches > 76) { // Height between 6'4" and 6'10"
+    else if (heightInches < 82 && heightInches > 77) { // Height between 6'4" and 6'10"
         const temp = Math.random();
 
         if (temp > 0.95) {
             player.pos = "C";
-        } else if (temp > 0.90) {
+        } else if (temp > 0.85) {
             player.pos = "PF";
-        } else if (temp > 0.70) {
+        } else if (temp > 0.40) {
             player.pos = "SF";
-        } else if (temp > 0.35) {
+        } else if (temp > 0.10) {
             player.pos = "SG";
         } else {
             player.pos = "PG";

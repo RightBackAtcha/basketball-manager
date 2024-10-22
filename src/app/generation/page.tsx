@@ -1,6 +1,7 @@
 'use client';
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import Select from 'react-select';
 
 import styles from "./page.module.css";
 import Button from '@/components/ui/Button';
@@ -9,7 +10,8 @@ import GenerationUtils from '@/utils/GenerationUtils';
 
 import { Player } from "@/utils/player/PlayerTypes";
 import { createSave } from "@/utils/DataUtils";
-import {Team} from "@/utils/teams/TeamTypes";
+import { Team } from "@/utils/teams/TeamTypes";
+import { Metadata } from "@/utils/league/LeagueTypes";
 
 export default function Generator() {
 
@@ -20,6 +22,22 @@ export default function Generator() {
     const [generatedPlayers, setGeneratedPlayers] = useState<Player[]>([]);
     const [generatedTeams, setGeneratedTeams] = useState<Team[]>([]);
     const [height, setHeight] = useState('');
+    const [season, setSeason] = useState(2024);
+
+    // Create empty Metadata type
+    const createMetadata = (): Metadata => {
+        return {
+            startingSeason: '',
+            season: '',
+            mID: 0,
+            tID: undefined
+
+        }
+    }
+
+    // Seasons allowed
+    const years = Array.from({length: 2024 - 1950 + 1}, (_, i) => 1950 + i)
+    const seasons = years.map((year) => ({ value: year, label: `Season: ${year}`})).reverse();
 
     const [isPlayersGenerated, setIsPlayersGenerated] = useState(false);
     const [isTeamsGenerated, setIsTeamsGenerated] = useState(false);
@@ -41,7 +59,12 @@ export default function Generator() {
 
     // Handle storing of player data
     const handleStore = async() => {
-        await createSave(generatedPlayers, generatedTeams); // Store generating teams and players in league
+        // Metadata type for if league is saved
+        const meta = createMetadata();
+        meta.startingSeason = season.toString();
+        meta.season = meta.startingSeason;
+
+        await createSave(generatedPlayers, generatedTeams, meta); // Store generating teams and players in league
     }
 
     const populateTeams = async () => {
@@ -92,7 +115,8 @@ export default function Generator() {
     const { handleGen } = GenerationUtils({
         inputValue,
         onGenPlayers: handlePlayers,
-        onGenTeams: handleTeams
+        onGenTeams: handleTeams,
+        season
     });
 
     const handleGenAll = async () => {
@@ -127,22 +151,41 @@ export default function Generator() {
                     <h2>Birth Place: {player?.born?.location}</h2>
                     <h2>College: {player?.college}</h2>
                     <h2>Name: {player?.first} {player?.last}</h2>
-                    <h2>Age: {player?.born?.year}</h2>
+                    <h2>Birth Year: {player?.born?.year}</h2>
                     <h2>Team: {team}</h2>
                     <h2>Height: {height}</h2>
-                    <h2>Ovr: {player?.ratings?.ovr}</h2>
-                    <h2>Pot: {player?.ratings?.pot}</h2>
+                    <h2>Ovr: {player?.ratings![0].ovr}</h2>
+                    <h2>Pot: {player?.ratings![0].pot}</h2>
                 </div>
-                <div id={styles.inputBox}>
-                <h3>Players to generate:</h3>
-                    <InputNumber
-                        inputValue={inputValue}
-                        onChange={handleInputChange}
-                        max={500}
+                <div className={styles.inputBox}>
+                    <h3>Players to generate:</h3>
+                        <InputNumber
+                            inputValue={inputValue}
+                            onChange={handleInputChange}
+                            max={500}
+                            placeHolder={'1 - 500'}
+                        />
+                </div>
+                <div className={styles.inputBox}>
+                    <Select
+                        options={seasons}
+                        isSearchable
+                        onChange={(e) => {
+                            if (e !== null) setSeason(e.value);
+                        }}
+                        placeholder={"Season: 2024"}
+                        styles={{
+                            control: (provided) => ({
+                                ...provided,
+                                borderRadius: '10px',
+                                width: '200px',
+                                height: '30px'
+                            })
+                        }}
                     />
                 </div>
                 <div id={styles.boxButton}>
-                    <Button onClick={handleGenAll} id={styles.buttonCustomGen} label='Generate' />
+                <Button onClick={handleGenAll} id={styles.buttonCustomGen} label='Generate' />
                     <Button onClick={handleStore} id={styles.buttonStore} label='Store'/>
                 </div>
             </div>

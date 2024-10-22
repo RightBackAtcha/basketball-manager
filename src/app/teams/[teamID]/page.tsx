@@ -4,16 +4,15 @@ import styles from "./page.module.css";
 
 import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
-import Image from 'next/image';
 
-import { Team } from "@/utils/teams/TeamTypes";
-import { db } from "@/utils/db";
+import { openDexieLeague } from "@/utils/db";
 import { Player } from "@/utils/player/PlayerTypes";
 import { usePathname } from "next/navigation";
 import DisplayFlag from "@/components/ui/DisplayFlag";
 
 export default function TeamRosters(){
     // Import players and teams from specific league
+    const db = openDexieLeague(1);
     const teams = useLiveQuery(() => db.teams.toArray());
     const players = useLiveQuery(() => db.players.toArray());
 
@@ -21,6 +20,7 @@ export default function TeamRosters(){
     const [name, setName] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [roster, setRoster] = useState<Player[]>([]);
+
     // Team ID fetched from url
     const teamID = Number((usePathname().split("/"))[2]);
 
@@ -106,8 +106,8 @@ export default function TeamRosters(){
                             <td style={{textAlign: "center"}}>{2024 - player.born!.year}</td>
                             <td style={{textAlign: "center"}}>{player.pos}</td>
                             <td style={{textAlign: "center"}}>{height}</td>
-                            <td style={{textAlign: "center"}}>{player.ratings!.ovr}</td>
-                            <td style={{textAlign: "center"}}>{player.ratings!.pot}</td>
+                            <td style={{textAlign: "center"}}>{player.ratings![0].ovr}</td>
+                            <td style={{textAlign: "center"}}>{player.ratings![0].pot}</td>
                         </tr>
                         );
                     })}

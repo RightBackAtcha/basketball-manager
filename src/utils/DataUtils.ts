@@ -2,8 +2,9 @@
 
 import { Player } from "@/utils/player/PlayerTypes";
 import { Team } from "@/utils/teams/TeamTypes";
-import { db } from "@/utils/db";
+import { openDexieLeague, openMetadata } from "@/utils/db";
 import Dexie from "dexie";
+import { Metadata } from "@/utils/league/LeagueTypes";
 
 // Fetch JSON data from API route
 export async function fetchJSON(filename: string) {
@@ -14,21 +15,30 @@ export async function fetchJSON(filename: string) {
 }
 
 // Create league save by generating players and creating teams
-export async function createSave(players: Player[] | null, teams: Team[]) {
+export async function createSave(players: Player[] | null, teams: Team[], meta: Metadata) {
+    const dbMeta = openMetadata();
+    if(!meta){
+        console.log("No metadata available");
+        return;
+    }
+    await dbMeta.metadata.add(meta);
+
+    const db = openDexieLeague(meta.mID!)
+
     if(!players) {
         console.error('Cannot store a null player');
         return;
     }
 
-    if (await Dexie.exists('league')) {
+    if (await Dexie.exists(`league${meta.mID}`)) {
         if(confirm("League already exists. Would you like to delete?")) {
             try {
-                const delPlayers = await db.players.clear();
-                const delTeams = await db.teams.clear();
+                await db.players.clear();
+                await db.teams.clear();
 
                 // Bulk add teams and players to Dexie
-                const idPlayers = await db.players.bulkAdd(players);
-                const idTeams = await db.teams.bulkAdd(teams);
+                await db.players.bulkAdd(players);
+                await db.teams.bulkAdd(teams);
 
                 console.log("League created!");
             } catch (error) {
@@ -42,9 +52,12 @@ export async function createSave(players: Player[] | null, teams: Team[]) {
     }
 
     try {
-        const id = await db.players.bulkAdd(players);
+        await db.players.bulkAdd(players);
+        await db.teams.bulkAdd(teams);
+
+        console.log("League created!");
     } catch (error) {
-        console.error(`Failed to store player: ${error}`);
+        console.error(`Failed to create league: ${error}`);
     }
 
     return;
@@ -57,7 +70,6 @@ export function gaussianRandom(mean: number, std: number) {
     const u2 = Math.random();
 
     const z1 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-    const z2 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
 
     return Math.floor(z1 * std + mean);
 }

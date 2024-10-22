@@ -1,6 +1,6 @@
 // Offloads player generation onto a separate thread using a web worker
 
-import { Awards, Born, Country, College, Player, Ratings, Region, Position } from "@/utils/player/PlayerTypes";
+import { Awards, Born, Country, College, Player, Region, Position } from "@/utils/player/PlayerTypes";
 import GenerationRatings from "@/utils/player/GenerationRatings";
 import GenerationHeight from "@/utils/player/GenerationHeight";
 
@@ -88,7 +88,7 @@ function randomCollege(colleges: College[], country: Country): string {
 }
 
 // Generate player base
-function generatePlayerBase(countries: Country[], firstNames: any, lastNames:any, regions: Region[], colleges: College[], i:number): Player {
+function generatePlayerBase(countries: Country[], firstNames: any, lastNames:any, regions: Region[], colleges: College[], i:number, seasonNum: number): Player {
     // All country weights
     let countryWeights = countries.map(country => country.weight);
 
@@ -108,7 +108,7 @@ function generatePlayerBase(countries: Country[], firstNames: any, lastNames:any
 
     // Create type for where player was born
     const born: Born = {
-        year: 2024 - weightedRandomAge(ageDistribution),
+        year: seasonNum - weightedRandomAge(ageDistribution),
         location: (region.name + ', ' + countryData.name)
     };
 
@@ -127,18 +127,18 @@ function generatePlayerBase(countries: Country[], firstNames: any, lastNames:any
         pID: i,
         pos: player.pos,
         hgtInches: player.hgtInches,
-        ratings: GenerationRatings(player.pos!, (2024 - born.year)),
+        ratings: [GenerationRatings(player.pos!, (seasonNum - born.year))],
     };
 }
 
 // Handle messages from main thread
 onmessage = function (e: MessageEvent) {
-    const { countries, firstNames, lastNames, regions, colleges, totalPlayers } = e.data;
+    const { countries, firstNames, lastNames, regions, colleges, totalPlayers, seasonNum } = e.data;
     let generatedPlayers: Player[] = [];
 
     // Generate requested number of players
     for (let i = 0 ; i < totalPlayers; i++) {
-        generatedPlayers.push(generatePlayerBase(countries, firstNames, lastNames, regions, colleges, i));
+        generatedPlayers.push(generatePlayerBase(countries, firstNames, lastNames, regions, colleges, i, seasonNum));
     }
 
     // Send generated players back to main thread

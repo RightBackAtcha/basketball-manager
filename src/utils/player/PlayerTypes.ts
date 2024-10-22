@@ -52,7 +52,7 @@ export type Player = {
     college?: string;
     tID?: number;
     pID?: number;
-    ratings?: Ratings;
+    ratings?: Ratings[];
     pos?: Position;
     hgtInches?: number;
     wingSpanInches?: number;

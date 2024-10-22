@@ -10,9 +10,10 @@ interface GenerationProps {
     inputValue: string;
     onGenPlayers: (players: Player[]) => void;
     onGenTeams: (teams: Team[]) => void;
+    season: number;
 }
 
-export default function GenerationUtils({ inputValue, onGenPlayers, onGenTeams }: GenerationProps) {
+export default function GenerationUtils({ inputValue, onGenPlayers, onGenTeams, season }: GenerationProps) {
     // Variables for player and team generation and storage
     const [countries, setCountries] = useState<Country[]>([]);
     const [names, setNames] = useState<Names | null>(null);
@@ -40,7 +41,10 @@ export default function GenerationUtils({ inputValue, onGenPlayers, onGenTeams }
     }, []);
 
     const handleCombinedGen = async() => {
+        // Starting season and total players stored in function
         const totalPlayers = Number(inputValue);
+        const seasonNum = Number(season);
+
         if (isNaN(totalPlayers) || totalPlayers <= 0) {
             console.error("Invalid input value:", inputValue);
             return;
@@ -61,7 +65,7 @@ export default function GenerationUtils({ inputValue, onGenPlayers, onGenTeams }
             const firstNames = names?.firstNames;
             const lastNames = names?.lastNames;
 
-            playerWorker.postMessage({ countries, firstNames, lastNames, regions, colleges, totalPlayers });
+            playerWorker.postMessage({ countries, firstNames, lastNames, regions, colleges, totalPlayers, seasonNum });
 
             playerWorker.onmessage = function (e: MessageEvent<Player[]>) {
                 const players = e.data;

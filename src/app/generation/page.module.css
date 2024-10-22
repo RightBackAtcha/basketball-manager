@@ -28,7 +28,7 @@
     padding-right: 10px;
 }
 
-#inputBox {
+.inputBox {
     margin-top: 30px;
     order: 2;
     display: flex;
