@@ -3,7 +3,7 @@ import React from "react";
 
 export const metadata: Metadata = {
     title: "Roster",
-    description: "",
+    description: "Roster",
 };
 
 export default function GeneratorLayout({

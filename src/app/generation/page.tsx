@@ -13,7 +13,7 @@ import {Team} from "@/utils/teams/TeamTypes";
 
 export default function Generator() {
 
-    // Lift states in parent app
+    // Lift states in parent app (Will clean up with reducer later tbh too lazy)
     const [player, setPlayer] = useState<Player | null>(null);
     const [team, setTeam ] = useState('');
     const [inputValue, setInputValue] = useState('');
@@ -41,7 +41,7 @@ export default function Generator() {
 
     // Handle storing of player data
     const handleStore = async() => {
-        await createSave(generatedPlayers, generatedTeams); // Store generating teams and players in league
+        await createSave(generatedPlayers, generatedTeams, meta); // Store generating teams and players in league
     }
 
     const populateTeams = async () => {
@@ -92,7 +92,8 @@ export default function Generator() {
     const { handleGen } = GenerationUtils({
         inputValue,
         onGenPlayers: handlePlayers,
-        onGenTeams: handleTeams
+        onGenTeams: handleTeams,
+        meta
     });
 
     const handleGenAll = async () => {

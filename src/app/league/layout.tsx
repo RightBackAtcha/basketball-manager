@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-    title: "Teams",
-    description: "All generated teams",
+    title: "New League",
+    description: "Create new league",
 };
 
 export default function GeneratorLayout({
@@ -11,7 +11,5 @@ export default function GeneratorLayout({
                                         }: {
     children: React.ReactNode
 }) {
-    return <section>
-        {children}
-        </section>
+    return <section>{children}</section>
 }

@@ -5,15 +5,16 @@ import {useEffect, useState} from "react";
 import { fetchJSON } from '@/utils/DataUtils';
 import { Country, Region, Player, College, Names } from "@/utils/player/PlayerTypes";
 import { Team } from "@/utils/teams/TeamTypes";
+import { Metadata } from "@/utils/league/LeagueTypes"
 
 interface GenerationProps {
     inputValue: string;
     onGenPlayers: (players: Player[]) => void;
     onGenTeams: (teams: Team[]) => void;
-    season: number;
+    metadata: Metadata;
 }
 
-export default function GenerationUtils({ inputValue, onGenPlayers, onGenTeams, season }: GenerationProps) {
+export default function GenerationUtils({ inputValue, onGenPlayers, onGenTeams, metadata }: GenerationProps) {
     // Variables for player and team generation and storage
     const [countries, setCountries] = useState<Country[]>([]);
     const [names, setNames] = useState<Names | null>(null);
@@ -43,7 +44,7 @@ export default function GenerationUtils({ inputValue, onGenPlayers, onGenTeams, 
     const handleCombinedGen = async() => {
         // Starting season and total players stored in function
         const totalPlayers = Number(inputValue);
-        const seasonNum = Number(season);
+        const seasonNum = Number(metadata.startingSeason);
 
         if (isNaN(totalPlayers) || totalPlayers <= 0) {
             console.error("Invalid input value:", inputValue);
