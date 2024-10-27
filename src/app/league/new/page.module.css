@@ -5,6 +5,8 @@
 }
 
 #topSelectors {
+    display: flex;
+    flex-direction: column;
 }
 
 #buttonContainer {

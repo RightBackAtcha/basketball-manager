@@ -1,0 +1,49 @@
+.comboboxinput {
+    border: 1px solid #000000;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: text;
+    background-color: #1e1f22;
+    color: white;
+    width: 200px;
+}
+
+.comboboxbutton {
+    margin-left: -40px;
+    cursor: pointer;
+    padding: 8px 12px;
+    background-color: #1e1f22;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.comboboxbutton:hover {
+    background-color: #000000;
+}
+
+.comboboxoptions {
+    position: absolute;
+    z-index: 10;
+    margin-top: 4px;
+    max-height: 200px;
+    width: 200px;
+    overflow-y: auto;
+    background-color: #1e1f22;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+
+.comboboxoption {
+    padding: 8px;
+    cursor: default;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.comboboxoption:hover {
+    background-color: #000000;
+}

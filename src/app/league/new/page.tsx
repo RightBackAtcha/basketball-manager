@@ -3,21 +3,19 @@
 import styles from "./page.module.css"
 import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
-import { Button, Key, ListBoxItem } from "react-aria-components";
-import { useAsyncList } from "@react-stately/data";
+import { Button, Key } from "react-aria-components";
 
 import { openMetadata } from "@/utils/db";
 import { Metadata } from "@/utils/league/LeagueTypes";
 import { fetchJSON } from "@/utils/DataUtils";
 import { Team } from "@/utils/teams/TeamTypes";
-import TeamComboBox from '@/components/ui/TeamComboBox';
+import TeamComboBox from '@/components/ui/TeamComboBox/TeamComboBox';
 
 export default function NewLeaguePage() {
     // States and variables
     const [metadata, setMetadata] = useState<Metadata[]>([]);
     const [availableTeams, setAvailableTeams] = useState<Team[]>([]);
     const [teamID, setTeamID] = useState<Key | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
     let numLeagues = 0;
 
     // Open metadata db
@@ -25,12 +23,18 @@ export default function NewLeaguePage() {
     const data = useLiveQuery(() => dbMetadata.metadata.toArray());
 
     // Handle league creation button press
-    const handleClick = (() => {
+    const handleClick = () => {
 
-    })
+    };
+
+    // Handle team selection from ComboBox
+    const handleSelection = (item: Team) => {
+        setTeamID(item.tID);
+        console.log(item);
+    };
 
     // Find new league metadata ID
-    useEffect(() => {
+    useEffect(  () => {
         async function loadData () {
             try {
                 // Fetch available teams
@@ -48,34 +52,25 @@ export default function NewLeaguePage() {
                 }
             } catch(error) {
                 console.error("Error fetching teams:", error);
-            } finally {
-                setIsLoading(false);
+        } finally {
+
             }
         }
 
         loadData();
     }, [data]);
 
-    // Print id when change detected
-    useEffect(() => {
-        if (teamID) {
-            const temp = teamID.toString();
-            console.log(temp.split("-")[2]);
-        }
-    }, [teamID]);
-
     return (
         <>
             <div id={styles.container}>
                 <div id={styles.topSelectors}>
-                    <TeamComboBox
-                        label="Select Team"
-                        defaultItems={availableTeams}
-                        defaultSelectedKey={availableTeams[0]?.tID}
-                        onSelectionChange={(id) => setTeamID(id)}
-                    >
-                        {item => <ListBoxItem key={item.tID}>{item.region} {item.name}</ListBoxItem>}
-                    </TeamComboBox>
+                    <h4>Select Team</h4>
+                    <div style={{marginTop: "-10px"}}>
+                        <TeamComboBox
+                            items={availableTeams}
+                            onSelectionChange={handleSelection}
+                        />
+                    </div>
                 </div>
                 <div id={styles.buttonContainer}>
                     <Button onPress={handleClick} id={styles.button}>Create League</Button>

@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
     "@spectrum-css/icons": "^2.0.0-alpha.4",
     "dexie": "^4.0.8",
     "dexie-react-hooks": "^1.1.7",
