@@ -9,3 +9,7 @@
 body {
   background: #38383d;
 }
+
+#ag-theme-quartz-dark {
+  --ag-row-background-color: #aaa
+}

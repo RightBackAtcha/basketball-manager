@@ -14,9 +14,11 @@ import TeamComboBox from '@/components/ui/TeamComboBox/TeamComboBox';
 export default function NewLeaguePage() {
     // States and variables
     const [metadata, setMetadata] = useState<Metadata[]>([]);
+    const [leagueData, setLeagueData] = useState<Metadata>();
     const [availableTeams, setAvailableTeams] = useState<Team[]>([]);
     const [teamID, setTeamID] = useState<Key | null>(null);
-    let numLeagues = 0;
+    const [leagueName, setLeagueName] = useState("");
+    const [numLeagues, setNumLeagues] = useState(0);
 
     // Open metadata db
     const dbMetadata = openMetadata();
@@ -24,13 +26,30 @@ export default function NewLeaguePage() {
 
     // Handle league creation button press
     const handleClick = () => {
+        if (teamID !== null || leagueName !== null) {
+            const data: Metadata = {
+                name: leagueName,
+                mID: numLeagues,
+                tID: Number(teamID),
+                startingSeason: "2024",
+                season: "2024"
+            }
 
+            console.log(data);
+        } else {
+            console.error("Error: Cannot create league. Some values were not selected")
+        }
     };
 
     // Handle team selection from ComboBox
-    const handleSelection = (item: Team) => {
-        setTeamID(item.tID);
-        console.log(item);
+    const handleSelection = (item: Team | null) => {
+        if (item !== null) {
+            setTeamID(item.tID);
+            console.log(item);
+        } else {
+            console.error("Error: No team found.")
+        }
+
     };
 
     // Find new league metadata ID
@@ -48,7 +67,7 @@ export default function NewLeaguePage() {
                 // Check if metadata is valid
                 if (data) {
                     setMetadata(data);
-                    numLeagues = data.length;
+                    setNumLeagues(data.length);
                 }
             } catch(error) {
                 console.error("Error fetching teams:", error);

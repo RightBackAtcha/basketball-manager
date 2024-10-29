@@ -64,6 +64,14 @@ export async function createSave(players: Player[] | null, teams: Team[], meta: 
 
 }
 
+// Create metadata object and add to Dexie
+export async function addMetadata(meta: Metadata) {
+    const dbMeta = openMetadata();
+    await dbMeta.metadata.add(meta);
+
+    console.log(`Metadata ${meta} successfully added.`);
+}
+
 // Gaussian random bell curve function for normal distribution
 export function gaussianRandom(mean: number, std: number) {
     const u1 = Math.random();
